@@ -17,15 +17,15 @@ fn main() {
     println!("Serving on http://localhost:3000...");
 
     server_gcd
-        .bind("127.0.0.1:3000").expect("error binding server to address")
-        .run().expect("error running server 3000");
+        .bind("127.0.0.1:3000")
+        .expect("error binding server to address")
+        .run()
+        .expect("error running server 3000");
 }
 
 fn get_index() -> HttpResponse {
-    HttpResponse::Ok()
-        .content_type("text/html")
-        .body(
-            r#"
+    HttpResponse::Ok().content_type("text/html").body(
+        r#"
                 <title>GCD Calculator</title>
                 <form action="/gcd" method="post">
                     <input type="text" name="n"/>
@@ -33,7 +33,7 @@ fn get_index() -> HttpResponse {
                     <button type="submit">Compute GCD</button>
                 </form>
             "#,
-        )
+    )
 }
 
 fn post_gcd(form: web::Form<GcdParameters>) -> HttpResponse {
@@ -43,14 +43,15 @@ fn post_gcd(form: web::Form<GcdParameters>) -> HttpResponse {
             .body("Computing the GCd with zero is boring.");
     }
 
-    let response =
-        format!("The greatest common divisor of the numbers {} and {} \
+    let response = format!(
+        "The greatest common divisor of the numbers {} and {} \
                 is <b>{}</b>\n",
-                form.n, form.m, gcd(form.n, form.m));
+        form.n,
+        form.m,
+        gcd(form.n, form.m)
+    );
 
-    HttpResponse::Ok()
-        .content_type("text/html")
-        .body(response)
+    HttpResponse::Ok().content_type("text/html").body(response)
 }
 
 fn gcd(mut m: u64, mut n: u64) -> u64 {
